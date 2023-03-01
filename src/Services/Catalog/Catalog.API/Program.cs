@@ -1,4 +1,4 @@
-namespace Restaurant.API
+namespace Catalog.API
 {
     public class Program
     {
