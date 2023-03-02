@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Restaurant.API\Restaurant.API\Catering.API.csproj" />
+    <ProjectReference Include="..\Catering.API\Catering.API.csproj" />
   </ItemGroup>
 
 </Project>
