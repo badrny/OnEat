@@ -31,5 +31,46 @@ namespace Catering.UnitTests
             //assert
             Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
         }
+
+        [Fact]
+        public async Task Get_restaurants_success()
+        {
+            //Arrang
+            _restaurantRepositoryMock.Setup(x => x.GetRestaurantsAsync());
+
+            //Act
+            var actionResult = await _restaurantController.GetRestaurantsAsync() as OkObjectResult;
+
+            //assert
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
+        }
+
+
+        [Fact]
+        public async Task Create_restaurants_success()
+        {
+            //Arrang
+            _restaurantRepositoryMock.Setup(x => x.AddRestaurantAsync(new()));
+
+            //Act
+            var actionResult = await _restaurantController.GetRestaurantsAsync() as ObjectResult;
+
+            //assert
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
+        }
+
+
+        [Fact]
+        public async Task Delete_restaurants_success()
+        {
+            //Arrang
+            _restaurantRepositoryMock.Setup(x => x.DeleteRestaurantAsync(new()));
+
+            //Act
+            var actionResult = await _restaurantController.GetRestaurantsAsync() as NotFoundObjectResult;
+
+            //assert
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
+        }
     }
 }

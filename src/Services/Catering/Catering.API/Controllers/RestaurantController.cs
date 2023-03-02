@@ -31,8 +31,9 @@ public class RestaurantController : ControllerBase
         return CreatedAtAction(nameof(GetRestaurantByIdAsync), new { id = restaurant.Id }, null);
     }
 
-    [HttpGet]
+    [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
+    [ActionName(nameof(GetRestaurantByIdAsync))]
     public async Task<IActionResult> GetRestaurantByIdAsync(int id) =>
         id <= 0 ? BadRequest("Id is wrong : try an id higher than zero") :
         Ok(await _restaurantRepository.GetRestaurantsAsync());
