@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcCatering";
+
+package CateringApi;
+
+service Catering{
+	rpc GetRestaurantById(RestaurantRequest) returns (RestaurantResponse){}
+}
+
+message RestaurantRequest{
+	int32 id = 1;
+}
+
+message RestaurantResponse{
+	int32 id = 1;
+	string name = 2;
+	int32 catalogid = 3;;
+	string description = 4;
+}

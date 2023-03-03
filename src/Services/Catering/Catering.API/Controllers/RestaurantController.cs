@@ -18,7 +18,7 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRestaurantsAsync() =>
         Ok(await _restaurantRepository.GetRestaurantsAsync());
 
@@ -26,25 +26,28 @@ public class RestaurantController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddRestaurantAsync(Restaurant restaurant)
     {
-        _logger.LogInformation($"Add Restaurant : {restaurant.Name}");
+        _logger.LogInformation("Add Restaurant : {@restaurant}", restaurant.Name);
         await _restaurantRepository.AddRestaurantAsync(restaurant);
         return CreatedAtAction(nameof(GetRestaurantByIdAsync), new { id = restaurant.Id }, null);
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
     [ActionName(nameof(GetRestaurantByIdAsync))]
     public async Task<IActionResult> GetRestaurantByIdAsync(int id) =>
         id <= 0 ? BadRequest("Id is wrong : try an id higher than zero") :
-        Ok(await _restaurantRepository.GetRestaurantsAsync());
+        Ok(await _restaurantRepository.GetRestaurantByIdAsync(id));
 
     [HttpDelete("{id:int}")]
-    [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteRestaurantAsync(int id)
     {
         if (id <= 0) return BadRequest("Id is wrong : try an id higher than zero");
         var restaurant = await _restaurantRepository.GetRestaurantByIdAsync(id);
+        if(restaurant.Id is null)
+            return NotFound($"restaurant with id {id} not found");
+
         await _restaurantRepository.DeleteRestaurantAsync(restaurant);
         return NoContent();
     }

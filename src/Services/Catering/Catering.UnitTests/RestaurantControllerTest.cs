@@ -47,30 +47,45 @@ namespace Catering.UnitTests
 
 
         [Fact]
-        public async Task Create_restaurants_success()
+        public async Task Create_restaurant_success()
         {
             //Arrang
             _restaurantRepositoryMock.Setup(x => x.AddRestaurantAsync(new()));
 
             //Act
-            var actionResult = await _restaurantController.GetRestaurantsAsync() as ObjectResult;
+            var actionResult = await _restaurantController.AddRestaurantAsync(new()) as ObjectResult;
 
             //assert
-            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status201Created);
         }
 
 
         [Fact]
-        public async Task Delete_restaurants_success()
+        public async Task Delete_restaurant_no_content_success()
         {
             //Arrang
             _restaurantRepositoryMock.Setup(x => x.DeleteRestaurantAsync(new()));
+            _restaurantRepositoryMock.Setup(x => x.GetRestaurantByIdAsync(It.IsAny<int>())).ReturnsAsync(new Restaurant() { Id = 1});
 
             //Act
-            var actionResult = await _restaurantController.GetRestaurantsAsync() as NotFoundObjectResult;
+            var actionResult = await _restaurantController.DeleteRestaurantAsync(1) as NoContentResult;
 
             //assert
-            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status200OK);
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status204NoContent);
+        }
+
+        [Fact]
+        public async Task Delete_restaurant_no_not_found_success()
+        {
+            //Arrang
+            _restaurantRepositoryMock.Setup(x => x.DeleteRestaurantAsync(new()));
+            _restaurantRepositoryMock.Setup(x => x.GetRestaurantByIdAsync(It.IsAny<int>())).ReturnsAsync(new Restaurant());
+
+            //Act
+            var actionResult = await _restaurantController.DeleteRestaurantAsync(1) as NotFoundObjectResult;
+
+            //assert
+            Assert.Equal(actionResult?.StatusCode, StatusCodes.Status404NotFound);
         }
     }
 }

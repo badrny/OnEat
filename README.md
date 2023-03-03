@@ -36,9 +36,14 @@ cd Catering.API
 dotnet build
 dotnet run
 ```
--  Now the app listening on: https://localhost:7173 or on: http://localhost:5083 ** you can change port in appsettings.json 
--  open your favorite navigator and go to https://localhost:7173/swagger/index.html or http://localhost:5083/swagger/index.html
-- 
+-  Now the app listening on: https://localhost:5001 ** you can change port in appsettings.json 
+-  open your favorite navigator and go to https://localhost:5001/swagger/index.html
+
+To passe by ApiGatway and aggregator with gRPC
+- run Catering.API in background
+- run Web.HttpAggregator
+- open your navigator and go to https://localhost:5000/swagger/index.html
+
 ## Licence
 Free
 **Free Software, Hell Yeah!**
